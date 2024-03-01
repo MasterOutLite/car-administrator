@@ -1,11 +1,12 @@
 import {NestFactory} from '@nestjs/core';
 import {AppModule} from './app.module';
 import {ValidationPipe} from "@nestjs/common";
-import {ValidationException} from "./pipes/ValidationException";
+import {ValidationException} from "./exception/ValidationException";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('api');
 
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
@@ -30,14 +31,14 @@ async function bootstrap() {
         name: 'JWT',
         description: 'Enter JWT token',
         in: 'header',
-      },
-      'JWT')
+      })
     .build();
 
   const documentSwagger = SwaggerModule.createDocument(app, configSwagger);
   SwaggerModule.setup('api/docs', app, documentSwagger);
 
   app.enableCors();
+
 
   await app.listen(3000);
 }

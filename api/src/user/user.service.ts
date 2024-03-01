@@ -8,4 +8,5 @@ export class UserService {
   constructor( @InjectRepository(UserEntity)
                private repository: Repository<UserEntity>) {
   }
+
 }

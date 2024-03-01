@@ -1,5 +1,5 @@
 import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {CarEntity} from "../car/car.entity";
+import CarEntity from "@src/car/car.entity";
 
 @Entity({name: 'car-modification'})
 export class CarModificationEntity {
@@ -8,6 +8,8 @@ export class CarModificationEntity {
 
   @ManyToOne(() => CarEntity, car => car.carModification)
   car: CarEntity;
+  @Column()
+  carId: number;
 
   @Column()
   name: string;
@@ -20,6 +22,4 @@ export class CarModificationEntity {
 
   @Column()
   wheelDrive: string;
-
-
 }

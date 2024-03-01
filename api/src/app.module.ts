@@ -1,21 +1,21 @@
 import {Module} from '@nestjs/common';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
 import {ConfigModule} from "@nestjs/config";
 import {TypeOrmModule} from "@nestjs/typeorm";
-import {DataSource} from "typeorm";
-import {UserEntity} from "./user/user.entity";
-import {UserModule} from './user/user.module';
-import {MarkModule} from './mark/mark.module';
-import {RoleModule} from './role/role.module';
-import {ModelModule} from './model/model.module';
-import {CarModule} from './car/car.module';
-import {CarModificationModule} from './car-modification/car-modification.module';
-import {RoleEntity} from "./role/role.entity";
-import {MarkEntity} from "./mark/mark.entity";
-import {ModelEntity} from "./model/model.entity";
-import {CarEntity} from "./car/car.entity";
-import {CarModificationEntity} from "./car-modification/car-modification.entity";
+import {UserEntity} from "@src/user/user.entity";
+import {MarkEntity} from "@src/mark/mark.entity";
+import {ModelEntity} from "@src/model/model.entity";
+import {CarModificationEntity} from "@src/car-modification/car-modification.entity";
+import {UserModule} from "@src/user/user.module";
+import {MarkModule} from "@src/mark/mark.module";
+import {RoleModule} from "@src/role/role.module";
+import {ModelModule} from "@src/model/model.module";
+import {CarModule} from "@src/car/car.module";
+import {CarModificationModule} from "@src/car-modification/car-modification.module";
+import RoleEntity from "@src/role/role.entity";
+import CarEntity from "@src/car/car.entity";
+import {AuthModule} from './auth/auth.module';
+import {JwtModule} from './jwt/jwt.module';
+import {FileModule} from './file/file.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -35,9 +35,13 @@ import {CarModificationEntity} from "./car-modification/car-modification.entity"
     RoleModule,
     ModelModule,
     CarModule,
-    CarModificationModule,],
-  controllers: [AppController],
-  providers: [AppService],
+    CarModificationModule,
+    AuthModule,
+    JwtModule,
+    FileModule,
+  ],
+  exports: [],
+  providers: []
 })
 export class AppModule {
 }

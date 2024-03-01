@@ -1,7 +1,7 @@
 import {ArgumentMetadata, PipeTransform} from "@nestjs/common";
 import {plainToClass,} from "class-transformer";
 import {validate} from "class-validator";
-import {ValidationException} from "./ValidationException";
+import {ValidationException} from "../exception/ValidationException";
 
 
 export class ValidationPipe implements PipeTransform {
