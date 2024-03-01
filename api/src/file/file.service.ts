@@ -6,9 +6,9 @@ import * as uuid from "uuid";
 import {v2 as cloudinary} from 'cloudinary';
 
 cloudinary.config({
-  cloud_name: 'dgklbpona',
-  api_key: '888896176426718',
-  api_secret: 'a7UvurHDjc9OZlKUW-UCiUnx_Xk'
+  cloud_name: 'dvnj0mbwl',
+  api_key: '432224574799269',
+  api_secret: '_r_ptP3AXnFAAwZ5nAOkjUmTHp8'
 });
 
 @Injectable()

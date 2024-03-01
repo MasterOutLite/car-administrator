@@ -16,16 +16,21 @@ import CarEntity from "@src/car/car.entity";
 import {AuthModule} from './auth/auth.module';
 import {JwtModule} from './jwt/jwt.module';
 import {FileModule} from './file/file.module';
+import {CommandModule} from "nestjs-command";
+import {SeedModule} from './seed/seed.module';
+import {CommandSeed} from "@src/command-seed";
 
 @Module({
-  imports: [ConfigModule.forRoot(),
+  imports: [
+    CommandModule,
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'flora.db.elephantsql.com',
       port: 5432,
-      username: 'postgres',
-      password: 'root',
-      database: 'car',
+      username: 'dxiekezp',
+      password: '7oKE3pSzAeFHwwryhQ5eSKQ_DlzgygI5',
+      database: 'dxiekezp',
       entities: [UserEntity, RoleEntity, MarkEntity, ModelEntity, CarEntity, CarModificationEntity],
       autoLoadEntities: true,
       synchronize: true,
@@ -39,9 +44,10 @@ import {FileModule} from './file/file.module';
     AuthModule,
     JwtModule,
     FileModule,
+    SeedModule,
   ],
   exports: [],
-  providers: []
+  providers: [CommandSeed]
 })
 export class AppModule {
 }

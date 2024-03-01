@@ -5,6 +5,7 @@ import {Repository} from "typeorm";
 import {LoginDto} from "@src/auth/dto/login.dto";
 import {JwtService} from "@nestjs/jwt";
 import {RegistrationDto} from "@src/auth/dto/registration.dto";
+import {Role} from "@src/const/Role";
 
 @Injectable()
 export class AuthService {
@@ -36,7 +37,7 @@ export class AuthService {
       throw new BadRequestException('User exists');
 
     const user = this.repository.create(dto);
-    user.roles = [{id: 1, name: 'USER'}];
+    user.roles = [{id: 2, name: Role.User}];
     await this.repository.save(user);
 
     return this.generateToken(user);
