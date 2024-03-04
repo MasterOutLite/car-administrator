@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsDateString, IsNumberString, IsString} from "class-validator";
+import {IsArray, IsDateString, IsNumberString, IsString} from "class-validator";
 
 export class CreateCarDto {
 
@@ -16,8 +16,11 @@ export class CreateCarDto {
     //@Transform(({value}) => (new Date(value)))
   yearRelease: Date;
 
-  @ApiProperty({description: 'Pictures files', format: 'binary', required: false})
-  img?: string[];
+  @ApiProperty({description: 'Pictures files', format: 'binary', required: true})
+  img: string[];
+
+  @ApiProperty({description: 'Pictures files', format: 'binary', required: true})
+  icon: string;
 
   @ApiProperty({example: 1, description: 'Mark car'})
   @IsNumberString()

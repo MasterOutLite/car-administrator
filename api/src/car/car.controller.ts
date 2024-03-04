@@ -3,7 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
-  Post,
+  Post, Put,
   Query,
   UploadedFiles,
   UseGuards,
@@ -19,6 +19,7 @@ import {FilterCarQuery} from "./query/filter-car.query";
 import {Roles} from "@src/guards/role-guard/roles.decorator";
 import {RolesGuard} from "@src/guards/role-guard/roles.guard";
 import {Role} from "@src/const/Role";
+import {UpdateCarDto} from "@src/car/dto/update-car.dto";
 
 @Controller('car')
 @ApiTags("Car")
@@ -27,7 +28,7 @@ export class CarController {
   }
 
   @Post()
-  @Roles(['admin', Role.User])
+  @Roles([Role.Admin])
   @UseGuards(RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({summary: 'Create car'})
@@ -35,12 +36,34 @@ export class CarController {
   @ApiResponse({status: HttpStatus.CREATED, type: ResponseCarDto})
   @UseInterceptors(FileFieldsInterceptor([
     {name: 'img'},
+    {name: 'icon'},
   ]))
   create(@Body() dto: CreateCarDto, @UploadedFiles() files: {
     img: Express.Multer.File[],
+    icon: Express.Multer.File[],
   }) {
-    return this.service.create(dto, files.img);
+    return this.service.create(dto, files);
   }
+
+
+  @Put()
+  @Roles([Role.Admin])
+  @UseGuards(RolesGuard)
+  @ApiBearerAuth()
+  @ApiOperation({summary: 'Create car'})
+  @ApiConsumes('multipart/form-data')
+  @ApiResponse({status: HttpStatus.CREATED, type: ResponseCarDto})
+  @UseInterceptors(FileFieldsInterceptor([
+    {name: 'img'},
+    {name: 'icon'},
+  ]))
+  update(@Query() query: CarQuery, @Body() dto: UpdateCarDto, @UploadedFiles() files: {
+    img: Express.Multer.File[],
+    icon: Express.Multer.File[],
+  }) {
+    return this.service.update(query.id, dto, files);
+  }
+
 
   @Get()
   @ApiOperation({summary: 'Get one car'})

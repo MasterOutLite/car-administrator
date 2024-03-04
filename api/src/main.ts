@@ -4,6 +4,9 @@ import {ValidationPipe} from "@nestjs/common";
 import {ValidationException} from "./exception/ValidationException";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 
+
+const PORT = 5000;
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
@@ -25,13 +28,13 @@ async function bootstrap() {
     .setDescription('Swagger Rest API')
     .setVersion('1.0.0')
     .addBearerAuth({
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-        name: 'JWT',
-        description: 'Enter JWT token',
-        in: 'header',
-      })
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      name: 'JWT',
+      description: 'Enter JWT token',
+      in: 'header',
+    })
     .build();
 
   const documentSwagger = SwaggerModule.createDocument(app, configSwagger);
@@ -40,7 +43,9 @@ async function bootstrap() {
   app.enableCors();
 
 
-  await app.listen(3000);
+  await app.listen(PORT, () => {
+    console.log('Server work on port:', PORT);
+  });
 }
 
 bootstrap();

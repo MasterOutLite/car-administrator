@@ -16,6 +16,9 @@ export class ResponseCarDto {
   @ApiProperty({description: 'Pictures files', format: 'binary', required: false})
   img?: string[];
 
+  @ApiProperty({description: 'Icon', format: 'binary', required: false})
+  icon?: string;
+
   @ApiProperty({example: 1, description: 'Mark car'})
   markId: number;
 

@@ -21,6 +21,9 @@ export default class CarEntity {
   @Column('text', {array: true})
   img: string[];
 
+  @Column('text', {nullable: true})
+  icon: string;
+
   @ManyToOne(() => MarkEntity, (mark) => mark.marks)
   mark: MarkEntity;
   @Column({nullable: true})

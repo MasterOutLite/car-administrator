@@ -14,7 +14,6 @@ import {CarModificationModule} from "@src/car-modification/car-modification.modu
 import RoleEntity from "@src/role/role.entity";
 import CarEntity from "@src/car/car.entity";
 import {AuthModule} from './auth/auth.module';
-import {JwtModule} from './jwt/jwt.module';
 import {FileModule} from './file/file.module';
 import {CommandModule} from "nestjs-command";
 import {SeedModule} from './seed/seed.module';
@@ -42,7 +41,6 @@ import {CommandSeed} from "@src/command-seed";
     CarModule,
     CarModificationModule,
     AuthModule,
-    JwtModule,
     FileModule,
     SeedModule,
   ],
