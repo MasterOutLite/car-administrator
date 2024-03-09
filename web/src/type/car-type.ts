@@ -1,3 +1,5 @@
+import {CarModification} from "./car-modification";
+
 export type CarType = {
   id: number;
   name: string;
@@ -7,4 +9,5 @@ export type CarType = {
   icon: string;
   markId: number;
   modelId: number;
+  carModification?: CarModification[];
 }

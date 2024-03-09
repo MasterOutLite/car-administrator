@@ -1,26 +1,37 @@
 import React from 'react';
-import {AppBar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
+import {AppBar, Box, Button, IconButton, Link, Stack, Toolbar, Typography} from "@mui/material";
+import {useAuthStore} from "../store/useAuthStore";
 
 function Header() {
+  const {token, setToken} = useAuthStore();
+
+  function handleLogOut() {
+    setToken('');
+  }
 
   return (
     <Box sx={{flexGrow: 1}}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{mr: 2}}
-          >
-            <MenuIcon/>
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-            News
-          </Typography>
-          <Button color="inherit">Login</Button>
+
+          <Stack direction='row' flexGrow={1} alignItems='center' gap={2}>
+            <Typography component="a" href={'/'} variant="h6" sx={{textDecoration: 'none',}}
+                        color={'inherit'}
+            >
+              Car Administrator
+            </Typography>
+
+            <Link component="a" href={'/admin'} color={'inherit'} underline='none'>
+              Admin
+            </Link>
+          </Stack>
+          {
+            token ?
+              <Button onClick={handleLogOut} color="inherit">Вийти</Button>
+              :
+              <Button href='/auth' color="inherit">Увійти</Button>
+          }
+
         </Toolbar>
       </AppBar>
     </Box>

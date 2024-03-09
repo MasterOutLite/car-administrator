@@ -1,6 +1,8 @@
 import React from 'react';
 import {ThemeRegistry} from "../style/ThemeRegistry";
 import Header from "./Header";
+import {LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 
 
 export interface MainProps {
@@ -12,7 +14,9 @@ function Main({children}: MainProps) {
     <ThemeRegistry>
       <Header/>
       <main>
-        {children}
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          {children}
+        </LocalizationProvider>
       </main>
     </ThemeRegistry>
   );

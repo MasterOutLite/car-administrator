@@ -1,17 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import BrandService from "../../service/brand-service";
 import {BrandType} from "../../type/brand-type";
-import {Autocomplete, Box, TextField} from '@mui/material';
+import {Autocomplete, Box, SxProps, TextField, Theme} from '@mui/material';
 import {useCarFilterStore} from "../../store/useCarFilterStore";
 
-function ListBrand() {
+export interface ListBrandProps {
+  setValue?: (val: number | null | undefined) => void;
+  sx?: SxProps<Theme>;
+}
+
+function ListBrand({setValue, sx}: ListBrandProps) {
   const [brands, setBrands] = useState<BrandType[]>([]);
   const [brand, setBrand] = useState<BrandType | null>(null);
-  const {setBrandId} = useCarFilterStore();
 
   function handleChangeBrand(event: React.SyntheticEvent, value: BrandType | null) {
     setBrand(value);
-    setBrandId(value?.id);
+    if (setValue)
+      setValue(value?.id)
     console.log('ListBrand', 'handleChangeBrand', value)
   }
 
@@ -33,7 +38,8 @@ function ListBrand() {
         options={brands}
         getOptionLabel={option => option.name}
         onChange={handleChangeBrand}
-        sx={{width: 300}}
+        fullWidth
+        sx={sx}
         renderInput={(params) => <TextField {...params} label="Бренд"/>}
       />
     </Box>

@@ -1,16 +1,45 @@
+import {useAuthStore} from "../store/useAuthStore";
+
 const api = process.env.REACT_APP_API_URL;
 
 class ApiService {
   async get(url: string) {
-    const response = await fetch(api + url);
-    console.log('ApiService', response.url, response.status, response.body);
-    return await response.json();
+    try {
+      const response = await fetch(api + url);
+      console.log('ApiService', response.url, response.status, response.body);
+      return await response.json();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
-  async post(url: string, body: any) {
+  async post(url: string, body: any,) {
+    console.log(JSON.stringify(body));
+    try {
+      const token = useAuthStore.getState().token;
+      const response = await fetch(api + url, {
+        method: 'post',
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+      });
+      return await response.json();
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+
+  async postFile(url: string, body: FormData) {
+    const token = useAuthStore.getState().token;
     const response = await fetch(api + url, {
       method: 'post',
-      body: JSON.stringify(body)
+      headers: {
+        "Authorization": `Bearer ${token}`,
+      },
+      body: body
     });
     return await response.json();
   }

@@ -1,4 +1,4 @@
-import {Autocomplete, Box, TextField} from '@mui/material';
+import {Autocomplete, Box, SxProps, TextField, Theme} from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import ModelService from "../../service/model-service";
 import {ModelType} from "../../type/model-type";
@@ -6,18 +6,18 @@ import {useCarFilterStore} from "../../store/useCarFilterStore";
 
 
 export interface ListTypeModelProps {
-
+  setValue?: (val: number | null | undefined) => void;
+  sx?: SxProps<Theme>;
 }
 
-function ListTypeModel({}: ListTypeModelProps) {
+function ListTypeModel({setValue, sx}: ListTypeModelProps) {
   const [typeModels, setTypeModels] = useState<ModelType[]>([]);
   const [typeModel, setTypeModel] = useState<ModelType | null>(null);
 
-  const {setModelId} = useCarFilterStore();
-
   function handleChangeModel(event: React.SyntheticEvent, value: ModelType | null) {
     setTypeModel(value);
-    setModelId(value?.id);
+    if (setValue)
+      setValue(value?.id)
     console.log('ListTypeModel', 'handleChangeModel', value)
   }
 
@@ -39,7 +39,8 @@ function ListTypeModel({}: ListTypeModelProps) {
         options={typeModels}
         getOptionLabel={option => option.name}
         onChange={handleChangeModel}
-        sx={{width: 300}}
+        fullWidth={true}
+        sx={sx}
         renderInput={(params) => <TextField {...params} label="Тип моделі"/>}
       />
     </Box>

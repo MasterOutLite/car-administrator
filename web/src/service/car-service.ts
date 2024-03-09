@@ -1,6 +1,7 @@
 import queryString from "query-string";
 import ApiService from "./api-service";
 import {CarType} from "../type/car-type";
+import {IFormCreateCar} from "../component/CreateCar/CreateCar";
 
 class CarService {
 
@@ -10,8 +11,14 @@ class CarService {
     return await ApiService.get('/car/all?' + query) as CarType[];
   }
 
-  async getCar(id: number) {
-    return await ApiService.get(`/car/${id}`) as CarType;
+  async getCar(id: number | string) {
+    return await ApiService.get(`/car?id=${id}`) as CarType;
+  }
+
+  async createCar(date: FormData) {
+    console.log("CarService.createCar", 'send', date)
+    const res = await ApiService.postFile('/car', date);
+    console.log(res);
   }
 }
 
