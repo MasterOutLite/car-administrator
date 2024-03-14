@@ -28,7 +28,7 @@ function AdminPage() {
     <Container>
 
       <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
-        <Tabs onChange={handleTab} value={tab}>
+        <Tabs onChange={handleTab} value={tab} variant="scrollable" scrollButtons>
           <Tab label={'Додати автомобіль'}/>
           <Tab label={'Додати Бренд'}/>
           <Tab label={'Додати Модель'}/>
