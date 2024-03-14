@@ -52,7 +52,7 @@ function LoadArrPictures({setLoadFile}: LoadArrPicturesProps) {
               <RemoveCircleOutlineRoundedIcon color={'error'}/>
             </IconButton>
             <RenderImg sx={{
-              height: {xs: '100%', sm: 250},
+              height: 250,
               width: {xs: '100%', sm: 340},
               maxWidth: 320, maxHeight: 250,
             }} srs={value.src}>
@@ -62,7 +62,7 @@ function LoadArrPictures({setLoadFile}: LoadArrPicturesProps) {
       }
 
       <RenderImg sx={{
-        height: {xs: '100%', sm: 250},
+        height: 250,
         width: {xs: '100%', sm: 200},
         maxWidth: 320, maxHeight: 250,
       }}>

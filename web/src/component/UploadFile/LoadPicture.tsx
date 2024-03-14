@@ -40,16 +40,16 @@ function LoadPicture({setLoadFile}: LoadPictureProps) {
 
   return (
     <Box sx={{
-      position: 'relative', height: {xs: '100%', sm: '340px'},
+      position: 'relative',
+      height: {xs: 340, sm: '340px'},
       width: {xs: '100%', sm: '250px'},
-      maxWidth: '340px', maxHeight: '500px',
+      maxWidth: 280, maxHeight: '500px',
     }}>
       <IconButton sx={{right: 5, top: 5, position: 'absolute'}} onClick={handleRemoveImg}>
         <RemoveCircleOutlineRoundedIcon color={'error'}/>
       </IconButton>
       <RenderImg sx={{
         height: {xs: '100%', sm: '340px'},
-        maxWidth: '100%', maxHeight: '500px',
       }} srs={src}>
         <Button
           component="label"

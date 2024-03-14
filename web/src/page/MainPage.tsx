@@ -11,9 +11,9 @@ function MainPage() {
 
   return (
     <Container sx={{marginTop: 2}}>
-      <Stack direction='row' gap={2} pb={2}>
-        <ListBrand sx={{width: 300}} setValue={setBrandId}/>
-        <ListTypeModel sx={{width: 300}} setValue={setModelId}/>
+      <Stack direction={{xs: 'column', sm: 'row'}} gap={2} pb={2}>
+        <ListBrand sx={{minWidth: 280}} setValue={setBrandId}/>
+        <ListTypeModel sx={{minWidth: 280}} setValue={setModelId}/>
       </Stack>
 
       <RenderCarCard/>

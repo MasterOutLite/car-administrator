@@ -69,7 +69,9 @@ function CreateCar() {
         <Stack gap={2} p={3}>
           <Button variant='contained' type='submit'>Додати автомобіль</Button>
         </Stack>
-        <Stack direction='row' gap={2} pb={2}>
+        <Stack
+          direction={{xs: 'column', sm: 'row'}}
+          gap={2} pb={2}>
           <LoadPicture setLoadFile={setLoadFile}/>
           <Stack flexGrow={1} gap={2}>
             <TextField placeholder='Назва автомобіля'  {...register("name", {required: true})}/>
