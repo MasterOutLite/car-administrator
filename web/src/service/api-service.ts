@@ -1,7 +1,7 @@
 import {useAuthStore} from "../store/useAuthStore";
 
-//const api = process.env.REACT_APP_API_URL;
-const api = 'http://localhost:5000/api';
+const api = process.env.REACT_APP_API_URL;
+//const api = 'http://localhost:5000/api';
 
 class ApiService {
   async get(url: string) {
