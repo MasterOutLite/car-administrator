@@ -1,18 +1,24 @@
-import {Autocomplete, Box, SxProps, TextField, Theme} from '@mui/material';
+import {Autocomplete, Box, Dialog, IconButton, Paper, Stack, SxProps, TextField, Theme} from '@mui/material';
 import React, {useEffect, useState} from 'react';
 import ModelService from "../../service/model-service";
 import {ModelType} from "../../type/model-type";
 import {useCarFilterStore} from "../../store/useCarFilterStore";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import CreateBrand from "../CreateBrand/CreateBrand";
+import CreateModel from "../CreateModel/CreateModel";
 
 
 export interface ListTypeModelProps {
   setValue?: (val: number | null | undefined) => void;
   sx?: SxProps<Theme>;
+  showAdd?: boolean
 }
 
-function ListTypeModel({setValue, sx}: ListTypeModelProps) {
+function ListTypeModel({setValue, sx, showAdd}: ListTypeModelProps) {
   const [typeModels, setTypeModels] = useState<ModelType[]>([]);
   const [typeModel, setTypeModel] = useState<ModelType | null>(null);
+  const [open, setOpen] = useState(false);
 
   function handleChangeModel(event: React.SyntheticEvent, value: ModelType | null) {
     setTypeModel(value);
@@ -20,6 +26,14 @@ function ListTypeModel({setValue, sx}: ListTypeModelProps) {
       setValue(value?.id)
     console.log('ListTypeModel', 'handleChangeModel', value)
   }
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     const get = async () => {
@@ -31,7 +45,7 @@ function ListTypeModel({setValue, sx}: ListTypeModelProps) {
   }, []);
 
   return (
-    <Box>
+    <Stack direction='row' alignItems='center'>
       <Autocomplete
         disablePortal
         id="select-brand"
@@ -43,7 +57,25 @@ function ListTypeModel({setValue, sx}: ListTypeModelProps) {
         sx={sx}
         renderInput={(params) => <TextField {...params} label="Тип моделі"/>}
       />
-    </Box>
+
+      {
+        showAdd && <IconButton onClick={handleOpen}>
+          <AddCircleOutlineIcon/>
+        </IconButton>
+      }
+
+
+      <Dialog open={open} onClose={handleClose}>
+        <Paper sx={{width: 400}}>
+          <IconButton onClick={handleClose} sx={{ml: 'auto'}}>
+            <CloseRoundedIcon/>
+          </IconButton>
+          <Stack p={2}>
+            <CreateModel/>
+          </Stack>
+        </Paper>
+      </Dialog>
+    </Stack>
   );
 }
 

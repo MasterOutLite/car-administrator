@@ -2,9 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {
   Accordion,
   AccordionDetails,
-  AccordionSummary,
+  AccordionSummary, Autocomplete,
   Box,
-  Button,
+  Button, Divider,
   IconButton,
   Paper, Stack,
   TextField,
@@ -14,6 +14,8 @@ import Grid2 from "@mui/material/Unstable_Grid2";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {CreateCarModificationType} from "../../type/car-modification";
 import DeleteIcon from '@mui/icons-material/Delete';
+import {wheelDriveItems} from "../../const/wheel-drive";
+import {typeTransmissionItems} from "../../const/type-transmission";
 
 export interface CreateCarModificationProps {
   setValue?: (value: CreateCarModificationType[]) => void;
@@ -29,8 +31,8 @@ function CreateCarModification({setValue}: CreateCarModificationProps) {
 
   const handleChangeName = (event: any) => setName(event.target.value);
   const handleChangePowerEngin = (event: any) => setPowerEngin(event.target.value);
-  const handleChangeTypeTransmission = (event: any) => setTypeTransmission(event.target.value);
-  const handleChangeWheelDrive = (event: any) => setWheelDrive(event.target.value);
+  const handleChangeTypeTransmission = (event: any, value: string | null) => setTypeTransmission(value || '');
+  const handleChangeWheelDrive = (event: any, value: string | null) => setWheelDrive(value || '');
 
   function handleAddModification() {
 
@@ -69,19 +71,32 @@ function CreateCarModification({setValue}: CreateCarModificationProps) {
         </Grid2>
 
         <Grid2 xs={12} md={3}>
-          <TextField id='modification-power-engine' value={powerEngin} onChange={handleChangePowerEngin} fullWidth
+          <TextField id='modification-power-engine' value={powerEngin}
+                     type='number'
+                     onChange={handleChangePowerEngin} fullWidth
                      placeholder='Потужність двигуна'/>
         </Grid2>
 
         <Grid2 xs={12} md={3}>
-          <TextField id='modification-type-transmision' value={typeTransmission} onChange={handleChangeTypeTransmission}
-                     fullWidth
-                     placeholder='Тип трансмісії'/>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={typeTransmissionItems}
+            onChange={handleChangeTypeTransmission}
+            fullWidth
+            renderInput={(params) => <TextField {...params} label="Трансмісія"/>}
+          />
         </Grid2>
 
         <Grid2 xs={12} md={3}>
-          <TextField id='modification-wheel-drive' value={wheelDrive} onChange={handleChangeWheelDrive} fullWidth
-                     placeholder='Тип приводу'/>
+          <Autocomplete
+            disablePortal
+            id="combo-box-demo"
+            options={wheelDriveItems}
+            onChange={handleChangeWheelDrive}
+            fullWidth
+            renderInput={(params) => <TextField {...params} label="Привід"/>}
+          />
         </Grid2>
 
         <Grid2 mt={1} ml={'auto'}>
@@ -98,51 +113,69 @@ function CreateCarModification({setValue}: CreateCarModificationProps) {
           Модифікації автомобіля
         </AccordionSummary>
         <AccordionDetails>
-          {
-            modification.map(value => (
-              <Grid2 key={value.name} container spacing={1}>
+          <Stack divider={<Divider/>} gap={1}>
+            <Paper elevation={2}>
+              <Grid2 container spacing={1}>
                 <Grid2 xs={12} md={3}>
-                  <Paper sx={{p: 1}}>
-                    <Typography>
-                      {value.name}
-                    </Typography>
-                  </Paper>
+                  <Typography p={1}>
+                    Назва
+                  </Typography>
                 </Grid2>
 
                 <Grid2 xs={12} md={3}>
-                  <Paper sx={{p: 1}}>
-                    <Typography>
-                      {value.powerEngin}
-                    </Typography>
-                  </Paper>
+                  <Typography p={1}>
+                    Потужність (к.с)
+                  </Typography>
                 </Grid2>
-
                 <Grid2 xs={12} md={3}>
-                  <Paper sx={{p: 1}}>
-                    <Typography>
-                      {value.typeTransmission}
-                    </Typography>
-                  </Paper>
+                  <Typography p={1}>
+                    Коробка передач
+                  </Typography>
                 </Grid2>
-
-                <Grid2 xs={10} md={3}>
-                  <Stack direction='row'>
-                    <Paper sx={{p: 1, flexGrow: 1}}>
-                      <Typography>
-                        {value.wheelDrive}
-                      </Typography>
-                    </Paper>
-                    <IconButton onClick={handleRemoveModification(value.name)}>
-                      <DeleteIcon/>
-                    </IconButton>
-                  </Stack>
+                <Grid2 xs={12} md={3}>
+                  <Typography p={1}>
+                    Привід
+                  </Typography>
                 </Grid2>
-
               </Grid2>
-            ))
-          }
+            </Paper>
+            {
+              modification.map(value => (
+                <Paper key={value.name} elevation={2}>
+                  <Grid2 key={value.name} container spacing={1}>
+                    <Grid2 xs={12} md={3}>
+                      <Typography p={1}>
+                        {value.name}
+                      </Typography>
+                    </Grid2>
 
+                    <Grid2 xs={12} md={3}>
+                      <Typography p={1}>
+                        {value.powerEngin} к.с
+                      </Typography>
+                    </Grid2>
 
+                    <Grid2 xs={12} md={3}>
+                      <Typography p={1}>
+                        {value.typeTransmission}
+                      </Typography>
+                    </Grid2>
+
+                    <Grid2 xs={10} md={3}>
+                      <Stack direction='row'>
+                        <Typography flexGrow={1} p={1}>
+                          {value.wheelDrive}
+                        </Typography>
+                        <IconButton onClick={handleRemoveModification(value.name)}>
+                          <DeleteIcon/>
+                        </IconButton>
+                      </Stack>
+                    </Grid2>
+                  </Grid2>
+                </Paper>
+              ))
+            }
+          </Stack>
         </AccordionDetails>
       </Accordion>
 

@@ -88,8 +88,8 @@ function CreateCar() {
                        {...register("description", {required: true})}/>
             <DatePicker onChange={handleChangeDate}/>
 
-            <ListBrand setValue={handleSetBrandId}/>
-            <ListTypeModel setValue={handleSetModelId}/>
+            <ListBrand setValue={handleSetBrandId} showAdd/>
+            <ListTypeModel setValue={handleSetModelId} showAdd/>
           </Stack>
         </Stack>
         <CreateCarModification setValue={setModification}/>
