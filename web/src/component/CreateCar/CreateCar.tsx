@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo, useState} from 'react';
 import {useForm} from "react-hook-form";
 import {Box, Button, Paper, Stack, TextField} from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers";
@@ -7,6 +7,8 @@ import LoadArrPictures from "../UploadFile/LoadArrPictures";
 import ListBrand from "../ListBrand/ListBrand";
 import ListTypeModel from "../ListTypeModel/ListTypeModel";
 import CarService from "../../service/car-service";
+import CreateCarModification from "../CreateCarModification/CreateCarModification";
+import {CreateCarModificationType} from "../../type/car-modification";
 
 export interface IFormCreateCar {
   name: string,
@@ -16,10 +18,12 @@ export interface IFormCreateCar {
   icon: File | null,
   markId: number,
   modelId: number,
+  modification?: CreateCarModificationType[],
 }
 
 function CreateCar() {
   const {register, handleSubmit, setValue} = useForm<IFormCreateCar>()
+  const [modification, setModification] = useState<CreateCarModificationType[]>([])
 
   function onSubmit(date: IFormCreateCar) {
     if (!date.icon || !date.img)
@@ -37,8 +41,13 @@ function CreateCar() {
     })
     form.append('modelId', date.modelId.toString());
     form.append('markId', date.markId.toString());
-    CarService.createCar(form);
-    console.log("Success", date);
+    modification.forEach(value => {
+
+    });
+    form.append('modification', JSON.stringify(modification))
+    CarService.createCarWithModification(form);
+
+    console.log("Success", date, form);
   }
 
   function setLoadFile(file: File | null) {
@@ -83,7 +92,8 @@ function CreateCar() {
             <ListTypeModel setValue={handleSetModelId}/>
           </Stack>
         </Stack>
-        <Paper elevation={4}>
+        <CreateCarModification setValue={setModification}/>
+        <Paper sx={{mt: 2}} elevation={4}>
           <LoadArrPictures setLoadFile={setLoadFileArr}/>
         </Paper>
 
@@ -92,4 +102,4 @@ function CreateCar() {
   );
 }
 
-export default CreateCar;
+export default memo(CreateCar);

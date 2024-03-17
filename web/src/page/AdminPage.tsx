@@ -11,7 +11,7 @@ function AdminPage() {
   const {token} = useAuthStore();
   const navigate = useNavigate();
 
-  const [tab, setTab] = React.useState(1);
+  const [tab, setTab] = React.useState(0);
 
   const handleTab = (event: React.SyntheticEvent, newValue: number) => {
     setTab(newValue);

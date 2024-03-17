@@ -20,6 +20,12 @@ class CarService {
     const res = await ApiService.postFile('/car', date);
     console.log(res);
   }
+
+  async createCarWithModification(date: FormData) {
+    console.log("CarService.createCar", 'send', date)
+    const res = await ApiService.postFile('/car/modification ', date);
+    console.log(res);
+  }
 }
 
 export default new CarService();
