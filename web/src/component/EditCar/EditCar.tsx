@@ -152,7 +152,7 @@ function EditCar() {
     <Box pb={6} pt={2}>
       <Stack direction='row' gap={2} justifyContent='flex-end' p={3}>
         <Button variant='contained' color='error' onClick={handleDeleteCar}>Видалити автомобіль</Button>
-        <Button variant='contained' color='success' onClick={editDataCar}>Змінити дані</Button>
+        <Button variant='contained' color='success' onClick={editDataCar}>Зберегти</Button>
       </Stack>
       <Stack
         direction={{xs: 'column', sm: 'row'}}

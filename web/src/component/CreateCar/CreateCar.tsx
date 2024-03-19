@@ -1,6 +1,6 @@
 import React, {memo, useState} from 'react';
 import {useForm} from "react-hook-form";
-import {Box, Button, Paper, Stack, TextField, Typography} from "@mui/material";
+import {Alert, Box, Button, Collapse, IconButton, Paper, Stack, TextField, Typography} from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers";
 import LoadPicture from "../UploadFile/LoadPicture";
 import LoadArrPictures from "../UploadFile/LoadArrPictures";
@@ -9,6 +9,7 @@ import ListTypeModel from "../ListTypeModel/ListTypeModel";
 import CarService from "../../service/car-service";
 import CreateCarModification from "../CreateCarModification/CreateCarModification";
 import {CreateCarModificationType} from "../../type/car-modification";
+import CloseIcon from "@mui/icons-material/Close";
 
 export interface IFormCreateCar {
   name: string,
@@ -24,6 +25,8 @@ export interface IFormCreateCar {
 function CreateCar() {
   const {register, handleSubmit, setValue} = useForm<IFormCreateCar>()
   const [modification, setModification] = useState<CreateCarModificationType[]>([])
+  const [message, setMessage]
+    = React.useState<null | { severity: 'success' | 'error' | 'warning', text: string }>(null);
 
   function onSubmit(date: IFormCreateCar) {
     if (!date.icon || !date.img)
@@ -45,7 +48,14 @@ function CreateCar() {
 
     });
     form.append('modification', JSON.stringify(modification))
-    CarService.createCarWithModification(form);
+    CarService
+      .createCarWithModification(form)
+      .then(() => {
+        setMessage({severity: 'success', text: 'Успішно створено.'})
+      })
+      .catch(() => {
+        setMessage({severity: 'error', text: 'Помилка створення.'})
+    });
 
     console.log("Success", date, form);
   }
@@ -73,10 +83,31 @@ function CreateCar() {
   }
 
   return (
-    <Box pb={6} pt={2}>
+    <Box pb={6}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Stack gap={2} p={3}>
+        <Stack gap={2} pb={3}>
           <Button variant='contained' type='submit'>Додати автомобіль</Button>
+          {!!message && <Collapse in={!!message}>
+            <Alert
+              severity={message.severity}
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setMessage(null);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit"/>
+                </IconButton>
+              }
+              sx={{mb: 2}}
+            >
+              {message.text}
+            </Alert>
+          </Collapse>
+          }
         </Stack>
         <Stack
           direction={{xs: 'column', sm: 'row'}}
