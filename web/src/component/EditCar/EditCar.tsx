@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {CarType, EditCarType} from "../../type/car-type";
 import CarService from "../../service/car-service";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Box, Button, Paper, Stack, TextField} from "@mui/material";
 import LoadPicture from "../UploadFile/LoadPicture";
 import {DatePicker} from "@mui/x-date-pickers";
@@ -11,10 +11,13 @@ import LoadArrPictures from "../UploadFile/LoadArrPictures";
 import dayjs from "dayjs";
 import EditCarModification from "../EditCarModification/EditCarModification";
 import EditCarModificationList from "../EditCarModificationList/EditCarModificationList";
+import {Route} from "../../router";
 
 
 function EditCar() {
   const param = useParams() as { id: string };
+  const navigate = useNavigate();
+
   const [car, setCar] = useState<EditCarType>({});
   const [oldCar, setOldCar] = useState<CarType>();
 
@@ -134,11 +137,22 @@ function EditCar() {
     console.log(car);
   }
 
+  function handleDeleteCar() {
+    if (!oldCar)
+      return;
+    CarService.deleteCar(oldCar.id)
+      .then(value => {
+        navigate(Route.Main);
+      })
+      .catch();
+  }
+
 
   return (
     <Box pb={6} pt={2}>
-      <Stack gap={2} p={3}>
-        <Button variant='contained' onClick={editDataCar}>Змінити дані</Button>
+      <Stack direction='row' gap={2} justifyContent='flex-end' p={3}>
+        <Button variant='contained' color='error' onClick={handleDeleteCar}>Видалити автомобіль</Button>
+        <Button variant='contained' color='success' onClick={editDataCar}>Змінити дані</Button>
       </Stack>
       <Stack
         direction={{xs: 'column', sm: 'row'}}
