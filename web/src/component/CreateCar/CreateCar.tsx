@@ -10,6 +10,8 @@ import CarService from "../../service/car-service";
 import CreateCarModification from "../CreateCarModification/CreateCarModification";
 import {CreateCarModificationType} from "../../type/car-modification";
 import CloseIcon from "@mui/icons-material/Close";
+import {useNavigate} from "react-router-dom";
+import {Route} from "../../router";
 
 export interface IFormCreateCar {
   name: string,
@@ -23,7 +25,8 @@ export interface IFormCreateCar {
 }
 
 function CreateCar() {
-  const {register, handleSubmit, setValue} = useForm<IFormCreateCar>()
+  const navigate = useNavigate();
+  const {register, reset, handleSubmit, setValue} = useForm<IFormCreateCar>()
   const [modification, setModification] = useState<CreateCarModificationType[]>([])
   const [message, setMessage]
     = React.useState<null | { severity: 'success' | 'error' | 'warning', text: string }>(null);
@@ -52,12 +55,17 @@ function CreateCar() {
       .createCarWithModification(form)
       .then(() => {
         setMessage({severity: 'success', text: 'Успішно створено.'})
+        eventReset();
       })
       .catch(() => {
         setMessage({severity: 'error', text: 'Помилка створення.'})
-    });
+      });
 
     console.log("Success", date, form);
+  }
+
+  function eventReset() {
+    navigate(Route.Admin);
   }
 
   function setLoadFile(file: File | null) {
