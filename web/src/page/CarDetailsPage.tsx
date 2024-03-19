@@ -31,8 +31,10 @@ function CarDetailsPage() {
     <Container>
 
       {user && user?.role.map(value => value === "ADMIN") ?
-        <Button sx={{mt: 2, ml: 'auto'}} variant='contained'
-                href={Route.Edit + param.id}>Редагувати</Button>
+        <Stack alignItems='flex-end' pt={2}>
+          <Button variant='contained'
+                  href={Route.Edit + param.id}>Редагувати</Button>
+        </Stack>
         : null
       }
 

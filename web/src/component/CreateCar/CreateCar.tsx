@@ -1,6 +1,6 @@
 import React, {memo, useState} from 'react';
 import {useForm} from "react-hook-form";
-import {Box, Button, Paper, Stack, TextField} from "@mui/material";
+import {Box, Button, Paper, Stack, TextField, Typography} from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers";
 import LoadPicture from "../UploadFile/LoadPicture";
 import LoadArrPictures from "../UploadFile/LoadArrPictures";
@@ -81,18 +81,36 @@ function CreateCar() {
         <Stack
           direction={{xs: 'column', sm: 'row'}}
           gap={2} pb={2}>
-          <LoadPicture setLoadFile={setLoadFile}/>
+          <Box>
+            <Typography variant='h6' textAlign='center'>Іконка</Typography>
+            <LoadPicture setLoadFile={setLoadFile}/>
+          </Box>
           <Stack flexGrow={1} gap={2}>
-            <TextField placeholder='Назва автомобіля'  {...register("name", {required: true})}/>
-            <TextField placeholder='Опис автомобіля' multiline rows={10}
-                       {...register("description", {required: true})}/>
-            <DatePicker onChange={handleChangeDate}/>
+            <Box>
+              <Typography variant='h6'>Назва</Typography>
+              <TextField placeholder='Назва автомобіля' fullWidth  {...register("name", {required: true})}/>
+            </Box>
+
+            <Box>
+              <Typography variant='h6'>Опис</Typography>
+              <TextField placeholder='Опис автомобіля' multiline rows={10}
+                         fullWidth
+                         {...register("description", {required: true})}/>
+            </Box>
+
+            <Box>
+              <Typography variant='h6'>Дата випуску</Typography>
+              <DatePicker sx={{width: '100%'}} onChange={handleChangeDate}/>
+            </Box>
 
             <ListBrand setValue={handleSetBrandId} showAdd/>
             <ListTypeModel setValue={handleSetModelId} showAdd/>
           </Stack>
         </Stack>
+        <Box height={2} my={2} sx={{background: '#000'}}/>
         <CreateCarModification setValue={setModification}/>
+        <Box height={2} my={2} sx={{background: '#000'}}/>
+        <Typography variant='h6'>Зображення автомобіля</Typography>
         <Paper sx={{mt: 2}} elevation={4}>
           <LoadArrPictures setLoadFile={setLoadFileArr}/>
         </Paper>

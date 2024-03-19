@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {CarType, EditCarType} from "../../type/car-type";
 import CarService from "../../service/car-service";
 import {useNavigate, useParams} from "react-router-dom";
-import {Box, Button, Paper, Stack, TextField} from "@mui/material";
+import {Box, Button, Divider, Paper, Stack, TextField, Typography} from "@mui/material";
 import LoadPicture from "../UploadFile/LoadPicture";
 import {DatePicker} from "@mui/x-date-pickers";
 import ListBrand from "../ListBrand/ListBrand";
@@ -157,30 +157,49 @@ function EditCar() {
       <Stack
         direction={{xs: 'column', sm: 'row'}}
         gap={2} pb={2}>
-        <LoadPicture initPicture={oldCar.icon} setLoadFile={setLoadFile}/>
-        <Stack flexGrow={1} gap={2}>
-          <TextField placeholder='Назва автомобіля'
-                     defaultValue={oldCar.name}
-                     onChange={event => {
-                       car.name = event.target.value;
-                       setCar(car)
-                     }}/>
-          <TextField placeholder='Опис автомобіля' multiline rows={10}
-                     defaultValue={oldCar.description}
-                     onChange={event => {
-                       car.description = event.target.value
-                       setCar(car)
-                     }}/>
-          <DatePicker onChange={handleChangeDate} value={dayjs(oldCar.yearRelease)}/>
+        <Box>
 
+          <LoadPicture initPicture={oldCar.icon} setLoadFile={setLoadFile}/>
+        </Box>
+        <Stack flexGrow={1} gap={2}>
+          <Box>
+            <Typography variant='h6'>Назва</Typography>
+            <TextField placeholder='Назва автомобіля'
+                       defaultValue={oldCar.name}
+                       fullWidth
+                       onChange={event => {
+                         car.name = event.target.value;
+                         setCar(car)
+                       }}/>
+          </Box>
+
+          <Box>
+            <Typography variant='h6'>Опис</Typography>
+            <TextField placeholder='Опис автомобіля' multiline rows={10}
+                       defaultValue={oldCar.description}
+                       fullWidth
+                       onChange={event => {
+                         car.description = event.target.value
+                         setCar(car)
+                       }}/>
+          </Box>
+
+          <Box>
+            <Typography variant='h6'>Дата випуску</Typography>
+            <DatePicker sx={{width: '100%'}} onChange={handleChangeDate} value={dayjs(oldCar.yearRelease)}/>
+          </Box>
           <ListBrand init={oldCar.markId} setValue={handleSetBrandId} showAdd/>
           <ListTypeModel init={oldCar.modelId} setValue={handleSetModelId} showAdd/>
         </Stack>
       </Stack>
-      {/*<CreateCarModification setValue={setModification}/>*/}
+      <Box height={2} my={2} sx={{background: '#000'}}/>
 
       <EditCarModificationList modifications={oldCar.carModification || []} carId={oldCar.id}/>
-      <Paper sx={{mt: 2, p:1}} elevation={4}>
+
+      <Box height={2} my={2} sx={{background: '#000'}}/>
+
+      <Typography variant='h6'>Зображення автомобіля</Typography>
+      <Paper sx={{mt: 2, p: 1}} elevation={4}>
         <LoadArrPictures eventRemove={eventRemoveFile} initPictures={oldCar.img} setLoadFile={setLoadFileArr}/>
       </Paper>
     </Box>
