@@ -13,6 +13,10 @@ class BrandService {
     return await ApiService.post('/mark', date);
   }
 
+  async delete(id: number) {
+    return await ApiService.delete(`/mark/${id}`);
+  }
+
 }
 
 export default new BrandService();

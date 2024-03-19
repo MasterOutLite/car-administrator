@@ -12,6 +12,7 @@ type Action = {
   addBrand: (brand: BrandType) => void;
   getBrand: () => void;
   getBrandAndReload: () => void;
+  remove: (id: number) => void;
 }
 
 const initState: State = {
@@ -21,8 +22,7 @@ const initState: State = {
 
 export const useBrandStore = create<State & Action>()(persist((set, get) => ({
   ...initState,
- async addBrand(brand)
- {
+  async addBrand(brand) {
     set({brands: [...get().brands, brand]});
   },
   async getBrand() {
@@ -37,7 +37,12 @@ export const useBrandStore = create<State & Action>()(persist((set, get) => ({
     set({isLoad: true})
     const brands = await BrandService.getBrands();
     set({brands: brands || [], isLoad: false})
+  },
+  remove(id) {
+    const newBrands = get().brands.filter(value => value.id != id);
+    set({brands: newBrands});
   }
 }), {
-  name: 'useBrandStore'
+  name: 'useBrandStore',
+  getStorage: () => sessionStorage,
 }));

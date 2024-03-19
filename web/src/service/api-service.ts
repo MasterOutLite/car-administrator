@@ -80,8 +80,8 @@ class ApiService {
       }
     });
     console.log('ApiService', response.url, response.status, response.body);
-    // if (response.body)
-    //   return await response.json();
+    if (response.status == 400)
+      throw new Error('Fail delete');
   }
 }
 

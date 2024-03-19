@@ -11,6 +11,10 @@ class ModelService {
   async create(date: IFormCreateModel) {
     return await ApiService.post('/model', date);
   }
+
+  async delete(id: number) {
+    return await ApiService.delete(`/model/${id}`);
+  }
 }
 
 export default new ModelService();

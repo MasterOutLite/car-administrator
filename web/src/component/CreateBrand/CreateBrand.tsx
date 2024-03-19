@@ -1,10 +1,25 @@
 import React, {memo} from 'react';
-import {Alert, Box, Button, Collapse, IconButton, Stack, TextField} from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  Box,
+  Button,
+  Collapse,
+  IconButton,
+  Paper,
+  Stack,
+  TextField,
+  Typography
+} from "@mui/material";
 import {FieldErrors, useForm} from "react-hook-form";
 import BrandService from "../../service/brand-service";
 import CloseIcon from '@mui/icons-material/Close';
 import {IFormCreateModel} from "../CreateModel/CreateModel";
 import {useBrandStore} from "../../store/useBrandStore";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export interface IFormCreteBrand {
   name: string,
@@ -19,7 +34,7 @@ function CreateBrand({close}: CreateBrandProps) {
   const [open, setOpen]
     = React.useState<null | { severity: 'success' | 'error' | 'warning', text: string }>(null);
 
-  const {addBrand} = useBrandStore();
+  const {addBrand, brands, remove} = useBrandStore();
 
   function onSubmit(date: IFormCreteBrand, event: any) {
     event.preventDefault();
@@ -43,6 +58,22 @@ function CreateBrand({close}: CreateBrandProps) {
 
   function onValidation(errors: FieldErrors<IFormCreateModel>) {
     setOpen({severity: 'warning', text: 'Помилка валідності поля!'})
+  }
+
+  function deleteBrand(id: number) {
+    return () => {
+      BrandService
+        .delete(id)
+        .then(() => {
+          remove(id);
+          setOpen({severity: 'success', text: 'Успішно видалено.'})
+        })
+        .catch(
+          () => {
+            setOpen({severity: 'error', text: 'Помилка при видалені. Можливо ці дані десь використовуються.'})
+          }
+        );
+    }
   }
 
 
@@ -76,6 +107,32 @@ function CreateBrand({close}: CreateBrandProps) {
         </Alert>
       </Collapse>
       }
+
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon/>}
+          aria-controls="panel1-content"
+          id="panel1-header"
+        >
+          Бренди
+        </AccordionSummary>
+        <AccordionDetails>
+          <Stack spacing={1}>
+            {
+              brands.map((value, index) => (
+                <Paper key={value.id}>
+                  <Stack direction='row' justifyContent='space-between' alignItems='center' p={1}>
+                    <Typography>{value.name}</Typography>
+                    <Button onClick={deleteBrand(value.id)} variant='contained' color='error'>
+                      <DeleteIcon/>
+                    </Button>
+                  </Stack>
+                </Paper>
+              ))
+            }
+          </Stack>
+        </AccordionDetails>
+      </Accordion>
 
 
     </Box>

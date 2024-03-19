@@ -1,9 +1,24 @@
 import React, {memo} from 'react';
-import {Alert, Box, Button, Collapse, IconButton, Stack, TextField} from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  Box,
+  Button,
+  Collapse,
+  IconButton,
+  Paper,
+  Stack,
+  TextField,
+  Typography
+} from "@mui/material";
 import {FieldErrors, useForm} from "react-hook-form";
 import ModelService from "../../service/model-service";
 import CloseIcon from "@mui/icons-material/Close";
 import {useModelStore} from "../../store/useModelStore";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export interface IFormCreateModel {
   name: string
@@ -14,7 +29,7 @@ function CreateModel() {
   const {register, handleSubmit, setValue} = useForm<IFormCreateModel>()
   const [open, setOpen]
     = React.useState<null | { severity: 'success' | 'error' | 'warning', text: string }>(null);
-  const {addModel} = useModelStore();
+  const {addModel, model, remove} = useModelStore();
 
   function onSubmit(date: IFormCreateModel) {
     if (date.name)
@@ -33,6 +48,22 @@ function CreateModel() {
 
   function onValidation(errors: FieldErrors<IFormCreateModel>) {
     setOpen({severity: 'warning', text: 'Помилка валідності поля!'})
+  }
+
+  function deleteModel(id: number) {
+    return () => {
+      ModelService
+        .delete(id)
+        .then(() => {
+          remove(id);
+          setOpen({severity: 'success', text: 'Успішно видалено.'})
+        })
+        .catch(
+          () => {
+            setOpen({severity: 'error', text: 'Помилка при видалені. Можливо ці дані десь використовуються.'})
+          }
+        );
+    }
   }
 
   return (
@@ -65,6 +96,32 @@ function CreateModel() {
         </Alert>
       </Collapse>
       }
+
+      <Accordion>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon/>}
+          aria-controls="panel1-content"
+          id="panel1-header"
+        >
+          Бренди
+        </AccordionSummary>
+        <AccordionDetails>
+          <Stack spacing={1}>
+            {
+              model.map((value, index) => (
+                <Paper key={value.id}>
+                  <Stack direction='row' justifyContent='space-between' alignItems='center' p={1}>
+                    <Typography>{value.name}</Typography>
+                    <Button onClick={deleteModel(value.id)} variant='contained' color='error'>
+                      <DeleteIcon/>
+                    </Button>
+                  </Stack>
+                </Paper>
+              ))
+            }
+          </Stack>
+        </AccordionDetails>
+      </Accordion>
     </Box>
   );
 }

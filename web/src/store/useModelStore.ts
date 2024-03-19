@@ -12,6 +12,7 @@ type Action = {
   addModel: (brand: ModelType) => void;
   getModel: () => void;
   getModelAndReload: () => void;
+  remove: (id: number) => void;
 }
 
 const initState: State = {
@@ -36,7 +37,12 @@ export const useModelStore = create<State & Action>()(persist((set, get) => ({
     set({isLoad: true})
     const model = await ModelService.get();
     set({model: model || [], isLoad: false})
+  },
+  remove(id) {
+    const newModels = get().model.filter(value => value.id != id);
+    set({model: newModels});
   }
 }), {
-  name: 'useModelStore'
+  name: 'useModelStore',
+  getStorage: () => sessionStorage,
 }));
