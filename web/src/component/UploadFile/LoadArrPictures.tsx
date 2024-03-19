@@ -1,9 +1,10 @@
 import React from 'react';
-import {Box, Button, IconButton, Stack} from "@mui/material";
+import {Box, Button, IconButton, Paper, Stack} from "@mui/material";
 import RemoveCircleOutlineRoundedIcon from "@mui/icons-material/RemoveCircleOutlineRounded";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {VisuallyHiddenInput} from './VisuallyHiddenInput';
 import RenderImg from "./RenderImg";
+import Grid2 from "@mui/material/Unstable_Grid2";
 
 export type LoadFile = {
   name: string;
@@ -54,39 +55,43 @@ function LoadArrPictures({setLoadFile, initPictures, eventRemove}: LoadArrPictur
   }
 
   return (
-    <Stack direction='row' flexWrap='wrap'>
+    <Grid2 container direction='row' flexWrap='wrap' spacing={2}>
       {
         files.map(value => (
-          <Box key={value.name} sx={{position: 'relative', maxWidth: 320}}>
-            <IconButton sx={{right: 5, top: 5, position: 'absolute'}}
-                        onClick={handleRemoveImg(value.name)}>
-              <RemoveCircleOutlineRoundedIcon color={'error'}/>
-            </IconButton>
-            <RenderImg sx={{
-              height: 250,
-              width: {xs: '100%', sm: 340},
-              maxWidth: 320, maxHeight: 250,
-            }} srs={value.src}>
-            </RenderImg>
-          </Box>
+          <Grid2 key={value.name} xs={12} sm={6} md={4} lg={3} xl={2} display='flex'>
+            <Paper sx={{position: 'relative', width: '100%'}}>
+              <Box>
+                <IconButton sx={{right: 5, top: 5, position: 'absolute'}}
+                            onClick={handleRemoveImg(value.name)}>
+                  <RemoveCircleOutlineRoundedIcon color={'error'}/>
+                </IconButton>
+                <RenderImg sx={{
+                  height: {xs: 400, sm: 300, md: 250},
+
+                }} srs={value.src}>
+                </RenderImg>
+              </Box>
+            </Paper>
+          </Grid2>
         ))
       }
 
-      <RenderImg sx={{
-        height: 250,
-        width: {xs: '100%', sm: 200},
-        maxWidth: 320, maxHeight: 250,
-      }}>
-        <Button
-          component="label"
-          variant="contained"
-          startIcon={<CloudUploadIcon/>}
-        >
-          Upload file
-          <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFileChange}/>
-        </Button>
-      </RenderImg>
-    </Stack>
+      <Grid2 xs={12} sm={6} md={4} lg={3} xl={2}>
+        <RenderImg sx={{
+          height: {xs: 400, sm: 300, md: 250},
+          width: '100%',
+        }}>
+          <Button
+            component="label"
+            variant="contained"
+            startIcon={<CloudUploadIcon/>}
+          >
+            Upload file
+            <VisuallyHiddenInput type="file" accept="image/*" onChange={handleFileChange}/>
+          </Button>
+        </RenderImg>
+      </Grid2>
+    </Grid2>
   );
 }
 

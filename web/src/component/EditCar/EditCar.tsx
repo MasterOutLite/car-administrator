@@ -180,7 +180,7 @@ function EditCar() {
       {/*<CreateCarModification setValue={setModification}/>*/}
 
       <EditCarModificationList modifications={oldCar.carModification || []} carId={oldCar.id}/>
-      <Paper sx={{mt: 2}} elevation={4}>
+      <Paper sx={{mt: 2, p:1}} elevation={4}>
         <LoadArrPictures eventRemove={eventRemoveFile} initPictures={oldCar.img} setLoadFile={setLoadFileArr}/>
       </Paper>
     </Box>
