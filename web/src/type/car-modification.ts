@@ -13,3 +13,10 @@ export type CreateCarModificationType = {
   typeTransmission: string;
   wheelDrive: string;
 }
+
+export type EditCarModification = {
+  name?: string;
+  powerEngin?: string;
+  typeTransmission?: string;
+  wheelDrive?: string;
+}

@@ -19,9 +19,10 @@ import {typeTransmissionItems} from "../../const/type-transmission";
 
 export interface CreateCarModificationProps {
   setValue?: (value: CreateCarModificationType[]) => void;
+  removeItems?: string;
 }
 
-function CreateCarModification({setValue}: CreateCarModificationProps) {
+function CreateCarModification({setValue, removeItems}: CreateCarModificationProps) {
   const [modification, setModification] = useState<CreateCarModificationType[]>([])
 
   const [name, setName] = useState<string>('');
@@ -60,6 +61,14 @@ function CreateCarModification({setValue}: CreateCarModificationProps) {
     if (setValue)
       setValue(modification);
   }, [modification, setValue]);
+
+  useEffect(() => {
+    if (removeItems) {
+      handleRemoveModification(removeItems)
+      console.log("remove");
+    }
+    console.log(removeItems);
+  }, [removeItems]);
 
   return (
     <Box>

@@ -8,15 +8,18 @@ import RenderImg from "./RenderImg";
 export type LoadFile = {
   name: string;
   src: string;
-  file: File
+  file: File | null
 }
 
 export interface LoadArrPicturesProps {
   setLoadFile?: (file: File[]) => void;
+  initPictures?: string [];
+  eventRemove?: (file: LoadFile) => void;
 }
 
-function LoadArrPictures({setLoadFile}: LoadArrPicturesProps) {
-  const [files, setFiles] = React.useState<LoadFile[]>([]);
+function LoadArrPictures({setLoadFile, initPictures, eventRemove}: LoadArrPicturesProps) {
+  const init = initPictures?.map(value => ({name: value, src: value, file: null}))
+  const [files, setFiles] = React.useState<LoadFile[]>(init || []);
 
   const handleFileChange = (event: any) => {
     const file = event.target.files[0];
@@ -36,9 +39,17 @@ function LoadArrPictures({setLoadFile}: LoadArrPicturesProps) {
   function handleRemoveImg(name: string) {
     return () => {
       const newFiles = files.filter(value => value.name !== name)
+      const removeFile = files.find(value => value.name == name);
+      if (eventRemove && removeFile)
+        eventRemove(removeFile)
       setFiles((f) => newFiles);
-      if (setLoadFile)
-        setLoadFile([...newFiles.map(value => value.file)]);
+
+      if (setLoadFile) {
+        const files = newFiles.map(value => value.file)
+          .filter(value => value != null);
+        // @ts-ignore
+        setLoadFile(files);
+      }
     }
   }
 

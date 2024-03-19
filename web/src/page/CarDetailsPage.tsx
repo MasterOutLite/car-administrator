@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {Badge, Box, Breadcrumbs, Container, Divider, Link, Paper, Stack, Typography} from "@mui/material";
+import {Badge, Box, Breadcrumbs, Button, Container, Divider, Link, Paper, Stack, Typography} from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import {CarType} from "../type/car-type";
 import CarService from "../service/car-service";
 import Grid2 from "@mui/material/Unstable_Grid2";
 import {grey} from "@mui/material/colors";
+import {useAuthStore} from "../store/useAuthStore";
+import {Route} from "../router";
 
 function CarDetailsPage() {
   const param = useParams() as { id: string };
 
   const [car, setCar] = useState<CarType>();
   const [date, setDate] = useState<Date>(new Date());
+  const {user} = useAuthStore();
 
   useEffect(() => {
     CarService.getCar(param.id).then(value => {
@@ -26,6 +29,12 @@ function CarDetailsPage() {
 
   return (
     <Container>
+
+      {user && user?.role.map(value => value === "ADMIN") ?
+        <Button sx={{mt: 2, ml: 'auto'}} variant='contained'
+                href={Route.Edit + param.id}>Редагувати</Button>
+        : null
+      }
 
       <Stack direction='row' pt={3}>
         <Typography variant={"h4"}>{car.name}</Typography>

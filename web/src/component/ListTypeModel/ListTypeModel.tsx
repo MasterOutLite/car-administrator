@@ -7,18 +7,23 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import CreateBrand from "../CreateBrand/CreateBrand";
 import CreateModel from "../CreateModel/CreateModel";
+import {useModelStore} from "../../store/useModelStore";
 
 
 export interface ListTypeModelProps {
   setValue?: (val: number | null | undefined) => void;
   sx?: SxProps<Theme>;
-  showAdd?: boolean
+  showAdd?: boolean;
+  init?: number;
 }
 
-function ListTypeModel({setValue, sx, showAdd}: ListTypeModelProps) {
-  const [typeModels, setTypeModels] = useState<ModelType[]>([]);
-  const [typeModel, setTypeModel] = useState<ModelType | null>(null);
+function ListTypeModel({setValue, sx, showAdd, init}: ListTypeModelProps) {
+  const {model, getModel} = useModelStore();
+
+  const [typeModel, setTypeModel] =
+    useState<ModelType | null>(model.find(value => value.id === init) || null);
   const [open, setOpen] = useState(false);
+
 
   function handleChangeModel(event: React.SyntheticEvent, value: ModelType | null) {
     setTypeModel(value);
@@ -36,12 +41,7 @@ function ListTypeModel({setValue, sx, showAdd}: ListTypeModelProps) {
   };
 
   useEffect(() => {
-    const get = async () => {
-      const res = await ModelService.get();
-      setTypeModels(res);
-      console.log('ListTypeModel', res);
-    }
-    get();
+    getModel();
   }, []);
 
   return (
@@ -50,7 +50,7 @@ function ListTypeModel({setValue, sx, showAdd}: ListTypeModelProps) {
         disablePortal
         id="select-brand"
         value={typeModel}
-        options={typeModels}
+        options={model}
         getOptionLabel={option => option.name}
         onChange={handleChangeModel}
         fullWidth={true}
@@ -66,7 +66,7 @@ function ListTypeModel({setValue, sx, showAdd}: ListTypeModelProps) {
 
 
       <Dialog open={open} onClose={handleClose}>
-        <Paper sx={{width: 400}}>
+        <Paper sx={{width: {xs: 300, sm: 400}}}>
           <IconButton onClick={handleClose} sx={{ml: 'auto'}}>
             <CloseRoundedIcon/>
           </IconButton>

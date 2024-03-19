@@ -26,6 +26,16 @@ class CarService {
     const res = await ApiService.postFile('/car/modification ', date);
     console.log(res);
   }
+
+  async editCar(id: number, date: FormData) {
+    const res = await ApiService.putFile(`/car/${id}`, date);
+    console.log(res);
+  }
+
+  async deleteCar(id: number) {
+    const res = await ApiService.delete(`/car/${id}`);
+    console.log(res);
+  }
 }
 
 export default new CarService();

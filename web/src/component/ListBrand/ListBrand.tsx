@@ -6,17 +6,21 @@ import {useCarFilterStore} from "../../store/useCarFilterStore";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CreateBrand from "../CreateBrand/CreateBrand";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import {useBrandStore} from "../../store/useBrandStore";
 
 export interface ListBrandProps {
   setValue?: (val: number | null | undefined) => void;
   sx?: SxProps<Theme>;
-  showAdd?: boolean
+  showAdd?: boolean;
+  init?: number;
 }
 
-function ListBrand({setValue, sx, showAdd}: ListBrandProps) {
-  const [brands, setBrands] = useState<BrandType[]>([]);
-  const [brand, setBrand] = useState<BrandType | null>(null);
+function ListBrand({setValue, sx, showAdd, init}: ListBrandProps) {
+  const {brands, getBrand} = useBrandStore();
+  const [brand, setBrand] =
+    useState<BrandType | null>(brands.find(value => value.id === init) || null);
   const [open, setOpen] = useState(false);
+
 
   function handleChangeBrand(event: React.SyntheticEvent, value: BrandType | null) {
     setBrand(value);
@@ -34,12 +38,7 @@ function ListBrand({setValue, sx, showAdd}: ListBrandProps) {
   };
 
   useEffect(() => {
-    const get = async () => {
-      const res = await BrandService.getBrands();
-      setBrands(res);
-      console.log('ListBrand', res);
-    }
-    get();
+    getBrand();
   }, []);
 
   return (
@@ -63,7 +62,7 @@ function ListBrand({setValue, sx, showAdd}: ListBrandProps) {
       }
 
       <Dialog open={open} onClose={handleClose}>
-        <Paper sx={{width: 400}}>
+        <Paper sx={{width: {xs: 300, sm: 400}}}>
           <IconButton onClick={handleClose} sx={{ml: 'auto'}}>
             <CloseRoundedIcon/>
           </IconButton>

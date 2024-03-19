@@ -11,3 +11,14 @@ export type CarType = {
   modelId: number;
   carModification?: CarModification[];
 }
+
+export type EditCarType = {
+  name?: string;
+  description?: string;
+  yearRelease?: string;
+  img?: File[];
+  removeImg?: string[];
+  icon?: File | null;
+  markId?: number;
+  modelId?: number;
+}

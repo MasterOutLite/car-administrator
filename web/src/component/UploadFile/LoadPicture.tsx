@@ -7,11 +7,12 @@ import RenderImg from "./RenderImg";
 
 export interface LoadPictureProps {
   setLoadFile?: (file: File | null) => void;
+  initPicture?: string;
 }
 
-function LoadPicture({setLoadFile}: LoadPictureProps) {
+function LoadPicture({setLoadFile, initPicture}: LoadPictureProps) {
 
-  const [src, setSrc] = React.useState<string>('');
+  const [src, setSrc] = React.useState<string>(initPicture || '');
   const [file, setFile] = React.useState(null);
 
   const handleFileChange = (event: any) => {

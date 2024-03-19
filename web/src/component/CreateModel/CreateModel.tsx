@@ -1,9 +1,9 @@
 import React, {memo} from 'react';
-import {Box, Button, Collapse, IconButton, Stack, TextField} from "@mui/material";
+import {Alert, Box, Button, Collapse, IconButton, Stack, TextField} from "@mui/material";
 import {FieldErrors, useForm} from "react-hook-form";
 import ModelService from "../../service/model-service";
-import {Alert} from "@mui/lab";
 import CloseIcon from "@mui/icons-material/Close";
+import {useModelStore} from "../../store/useModelStore";
 
 export interface IFormCreateModel {
   name: string
@@ -14,17 +14,21 @@ function CreateModel() {
   const {register, handleSubmit, setValue} = useForm<IFormCreateModel>()
   const [open, setOpen]
     = React.useState<null | { severity: 'success' | 'error' | 'warning', text: string }>(null);
+  const {addModel} = useModelStore();
 
   function onSubmit(date: IFormCreateModel) {
     if (date.name)
       setOpen(null);
-    ModelService.create(date).then(value => {
-      setValue('name', '');
-      console.log(value);
-      setOpen({severity: 'success', text: 'Успішно додано'})
-    }).catch(reason => {
-      setOpen({severity: 'error', text: 'Помилка при додаванні. Можливо модель вже існує!'})
-    });
+    ModelService.create(date)
+      .then(value => {
+        setValue('name', '');
+        console.log(value);
+        setOpen({severity: 'success', text: 'Успішно додано'});
+        addModel(value);
+      })
+      .catch(reason => {
+        setOpen({severity: 'error', text: 'Помилка при додаванні. Можливо модель вже існує!'})
+      });
   }
 
   function onValidation(errors: FieldErrors<IFormCreateModel>) {
